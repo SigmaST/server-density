@@ -1,0 +1,155 @@
+{
+	"jpsVersion": "0.5",
+	"jpsType": "update",
+	"application": {
+		"categories": [
+				"apps/dev-tools"
+		],
+		"targetNodes": {
+			"nodeGroup": [
+					"cp", "sqldb", "nosqldb", "cache"
+			]
+		},
+		"id": "serverdensity",
+		"name": "Server Density",
+		"logo": "https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/images/ServerDensity.png",
+		"version": "1.2",
+		"homepage": "https://www.serverdensity.com",
+		"description": {
+			"short": "Server Monitoring",
+			"en": "Infrastructure and website monitoring out of the box. Easy to use interface with flexible alerts, graphs that will help you to troubleshoot issues and endless customization possibilities with the plugins and REST API. <br><br>If you don’t have an account yet, start your free trial!<br><br>Find out where to get your API token at <a href=\"http://www.serverdensity.com/jelastic-help\" target=\"_blank\"><font color=\"LimeGreen\">www.serverdensity.com/jelastic-help</a>"
+		},
+		"settings": {
+			"fields": [{
+					"type": "string",
+					"name": "dashoard_url",
+					"caption": {
+						"en": "Dashboard URL"
+					},
+					"required": true,
+					"placeholder": "{DOMAIN_URL}.serverdensity.io",
+					"regexText": "{your doamin name}.serverdensity.io",
+					"regex": "[0-9a-z]{0,20}serverdensity.io"
+				}, {
+					"type": "string",
+					"name": "token",
+					"caption": {
+						"en": "API token"
+					},
+					"regexText": "API token should be 32 characters",
+					"regex": "^[a-z0-9]{32}$",
+					"required": true,
+					"placeholder": "32 characters"
+				}
+			]
+		},
+		"onUninstall": {
+			"call": [
+					"unInstallAddOn"
+			]
+		},
+		"onInstall": {
+			"call": [
+					"onInstallAction"
+			]
+		},
+		"env": {
+			"onAfterRestartNode": {
+				"call": [
+						"onRestartAction"
+				]
+			}
+		},
+		"procedures": [{
+				"id": "unInstallAddOn",
+				"onCall": [{
+						"executeScript": {
+							"type": "js",
+							"script": "https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/scripts/unInstall.js"
+						}
+					}
+				]
+			}, {
+				"id": "unInstall",
+				"onCall": [{
+						"executeShellCommands": [{
+								"nodeType": "${this.nodeType}",
+								"commands": [
+										"/etc/init.d/sd-agent stop",
+										"yum -y remove sd-agent",
+										"rm -rf /usr/bin/sd-agent",
+										"rm -rf /etc/init.d/sd-agent",
+										"rm -rf /var/lib/jelastic/keys/sd-agent",
+										"rm -rf /var/lib/jelastic/keys/install.log",
+										"rm -rf /var/lib/jelastic/keys/config.cfg"
+								],
+								"user": "root"
+							}
+						]
+					}
+				]
+			}, {
+				"id": "onRestartAction",
+				"onCall": [{
+						"executeScript": {
+							"type": "javascript",
+							"script": "https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/scripts/restartScript.js"
+						}
+					}
+				]
+			}, {
+				"id": "restartAgent",
+				"onCall": [{
+						"executeShellCommands": [{
+								"nodeType": "${this.nodeType}",
+								"commands": [
+										"sudo /etc/init.d/sd-agent restart 2>&1"
+								],
+								"user": "root"
+							}
+						]
+					}
+				]
+			}, {
+				"id": "onInstallAction",
+				"onCall": [{
+						"executeScript": {
+							"type": "javascript",
+							"script": "https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/scripts/onInstallScript.js"
+						}
+					}
+				]
+			}, {
+				"id": "installAgent",
+				"onCall": [{
+						"executeShellCommands": [{
+								"nodeType": "${this.nodeType}",
+								"commands": [
+										"curl -fsSL \"https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/scripts/installScript.sh\" -o /tmp/dest.sh"
+								],
+								"user": "root"
+							}
+						]
+					}, {
+						"executeShellCommands": [{
+								"nodeType": "${this.nodeType}",
+								"commands": [
+										"chmod a+x /tmp/dest.sh",
+										"/bin/bash -x /tmp/dest.sh -a https://${settings.dashoard_url} -t ${settings.token} > /tmp/install.log"
+								],
+								"user": "root"
+							}
+						]
+					}, {
+						"restartNodes": {
+							"nodeType": "${this.nodeType}"
+						}
+					}
+				]
+			}
+		],
+		"success": {
+			"en": "Your Application is installed.<br><br>Config files and logs you can find at keys folder on your nodes."
+		}
+	}
+}
