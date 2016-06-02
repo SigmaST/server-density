@@ -1,7 +1,6 @@
 # Jelastic serverDensity Add-on
 
 This repository provides [serverDensity](https://www.serverdensity.com/) add-on for Jelastic Platform.
-[![GET IT HOSTED](https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/images/getithosted.png)](http://go.jelastic.com/test?hoster-select=1&theme=modern&app=https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/serverDensity-1.2.json)
 
 **serverDensity** is a Server monitoring that doesn’t suck.
 
