@@ -9,9 +9,9 @@ SD_CONFIG_FILE="/etc/sd-agent/config.cfg"
 KEY_DIRECTORY="/var/lib/jelastic/keys/"
 SD_LOG_DIR="/var/log/sd-agent/"
 SD_INSTALL_DIR="/usr/bin/sd-agent/"
-MCON="yum -y install https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/dumps/mysql-community-libs-compat-5.7.7-0.3.rc.el7.x86_64.rpm MySQL-python.x86_64"
-MYSQL_PLUGIN_SCRIPT="curl -fsS 'https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/scripts/MySQL.py' -o ${KEY_DIRECTORY}/MySQL.py"
-MONGO_PLUGIN_SCRIPT="pip install pymongo && curl -fsS 'https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/scripts/Mongodb.py' -o ${KEY_DIRECTORY}/Mongodb.py"
+MCON="yum -y install https://raw.githubusercontent.com/jelastic-jps/serverDensity/master/dumps/mysql-community-libs-compat-5.7.7-0.3.rc.el7.x86_64.rpm MySQL-python.x86_64"
+MYSQL_PLUGIN_SCRIPT="curl -fsS 'https://raw.githubusercontent.com/jelastic-jps/serverDensity/master/scripts/MySQL.py' -o ${KEY_DIRECTORY}/MySQL.py"
+MONGO_PLUGIN_SCRIPT="pip install pymongo && curl -fsS 'https://raw.githubusercontent.com/jelastic-jps/serverDensity/master/scripts/Mongodb.py' -o ${KEY_DIRECTORY}/Mongodb.py"
 PASSWORD=$(cat /var/log/jem.log  | grep passwd | tail -n 1 | awk -F "-p " '{ print $2}');
 IGNORE_RELEASE=0
  
@@ -198,7 +198,7 @@ if [ "${TYPE}" = "mysql" ]; then
      sh -c "ln -s ${SD_CONFIG_FILE} ${KEY_DIRECTORY} && ln -s ${SD_LOG_DIR} ${KEY_DIRECTORY} && chown -R 777 /var/lib/jelastic/keys/config.cfg && chmod 666 /etc/sd-agent/config.cfg && $MCON && $MYSQL_PLUGIN_SCRIPT"
 fi
 if [ "${TYPE}" = "memcached" ]; then
-     sh -c "ln -s ${SD_CONFIG_FILE} ${KEY_DIRECTORY} && ln -s ${SD_LOG_DIR} ${KEY_DIRECTORY} && chown 777 ${KEY_DIRECTORY} && cd /var/lib/jelastic/keys &&  curl -fsS 'https://raw.githubusercontent.com/JelasticJPS/serverDensity/master/scripts/Memcached.py' -o Memcached.py"
+     sh -c "ln -s ${SD_CONFIG_FILE} ${KEY_DIRECTORY} && ln -s ${SD_LOG_DIR} ${KEY_DIRECTORY} && chown 777 ${KEY_DIRECTORY} && cd /var/lib/jelastic/keys &&  curl -fsS 'https://raw.githubusercontent.com/jelastic-jps/serverDensity/master/scripts/Memcached.py' -o Memcached.py"
 fi
 if [ "${TYPE}" = "mongodb" ]; then
      sh -c "ln -s ${SD_CONFIG_FILE} ${KEY_DIRECTORY} && ln -s ${SD_LOG_DIR} ${KEY_DIRECTORY} && chown -R mongod:mongod ${KEY_DIRECTORY} && ${CHMOD} && ${MONGO_PLUGIN_SCRIPT}"
