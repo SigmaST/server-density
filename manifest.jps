@@ -12,7 +12,7 @@
 		},
 		"id": "serverdensity",
 		"name": "Server Density",
-		"logo": "https://raw.githubusercontent.com/jelastic-jps/serverDensity/master/images/ServerDensity.png",
+		"logo": "https://raw.githubusercontent.com/jelastic-jps/server-density/master/images/ServerDensity.png",
 		"version": "1.2",
 		"homepage": "https://www.serverdensity.com",
 		"description": {
@@ -65,7 +65,7 @@
 				"onCall": [{
 						"executeScript": {
 							"type": "js",
-							"script": "https://raw.githubusercontent.com/jelastic-jps/serverDensity/master/scripts/unInstall.js"
+							"script": "https://raw.githubusercontent.com/jelastic-jps/server-density/master/scripts/unInstall.js"
 						}
 					}
 				]
@@ -93,7 +93,7 @@
 				"onCall": [{
 						"executeScript": {
 							"type": "javascript",
-							"script": "https://raw.githubusercontent.com/jelastic-jps/serverDensity/master/scripts/restartScript.js"
+							"script": "https://raw.githubusercontent.com/jelastic-jps/server-density/master/scripts/restartScript.js"
 						}
 					}
 				]
@@ -115,7 +115,7 @@
 				"onCall": [{
 						"executeScript": {
 							"type": "javascript",
-							"script": "https://raw.githubusercontent.com/jelastic-jps/serverDensity/master/scripts/onInstallScript.js"
+							"script": "https://raw.githubusercontent.com/jelastic-jps/server-density/master/scripts/onInstallScript.js"
 						}
 					}
 				]
@@ -125,7 +125,7 @@
 						"executeShellCommands": [{
 								"nodeType": "${this.nodeType}",
 								"commands": [
-										"curl -fsSL \"https://raw.githubusercontent.com/jelastic-jps/serverDensity/master/scripts/installScript.sh\" -o /tmp/dest.sh"
+										"curl -fsSL \"https://raw.githubusercontent.com/jelastic-jps/server-density/master/scripts/installScript.sh\" -o /tmp/dest.sh"
 								],
 								"user": "root"
 							}
